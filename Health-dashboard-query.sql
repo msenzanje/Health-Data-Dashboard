@@ -18,7 +18,7 @@ WITH active_clients as
 		on e.patient = p.id
 	WHERE start BETWEEN '2022-01-01 00:00' AND '2022-12-31 23:59'
 	 AND p.deathdate is NULL
-	 AND EXTRACT(month FROM age('2022-12-31 23:59', p.birthdate)) >= 6
+	 AND EXTRACT(EPOCH FROM age('2022-12-31',p.birthdate)) / 2592000 >= 6
 ),
 flu_shot_2022 as
 (
@@ -31,6 +31,7 @@ flu_shot_2022 as
  )
 /* Relevent columnns from patients table*/
 SELECT pat.birthdate
+	,EXTRACT(YEAR FROM age('12-31-2022', birthdate)) as age
  	,pat.race
 	,pat.county
 	,pat.id
